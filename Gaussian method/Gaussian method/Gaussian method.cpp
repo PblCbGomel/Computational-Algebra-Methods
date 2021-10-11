@@ -198,19 +198,39 @@ int main() {
         }
     }
 
-    //Найдём октаэдрические нормы матриц и число обусловленности
+    //Найдём кубические нормы матриц и число обусловленности
     double normSystemM = 0;
+    double maxSum = 0;
     for (int i = 0; i < systemM.size(); ++i) {
         for (int j = 0; j < systemM.size(); ++j) {
-            normSystemM += abs(systemM[i][j]);
+            maxSum += abs(systemM[i][j]);
         }
+        if (maxSum > normSystemM) {
+            normSystemM = maxSum;
+        }
+        maxSum = 0;
     }
 
     double normInverseM = 0;
     for (int i = 0; i < inverseMatrix.size(); ++i) {
         for (int j = 0; j < inverseMatrix.size(); ++j) {
-            normInverseM += abs(inverseMatrix[i][j]);
+           maxSum += abs(inverseMatrix[i][j]);
         }
+        if (maxSum > normInverseM) {
+            normInverseM = maxSum;
+        }
+        maxSum = 0;
+    }
+
+    double normNeuralM = 0;
+    for (int i = 0; i < neuralMatrix.size(); ++i) {
+        for (int j = 0; j < neuralMatrix.size(); ++j) {
+            maxSum += abs(neuralMatrix[i][j]);
+        }
+        if (maxSum > normNeuralM) {
+            normNeuralM = maxSum;
+        }
+        maxSum = 0;
     }
 
     double conditionNumber = normInverseM * normSystemM;
