@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <iomanip>
+#include <cmath>
 #include <vector>
 
 bool diagDomination(const std::vector<std::vector<double>> M) {
@@ -116,6 +117,16 @@ double cubeNorm(std::vector<double> v1, std::vector<double> v2) {
     return max;
 }
 
+double normVec(std::vector<double> b) {
+    int max = 0;
+    for (auto i : b) {
+        if (max < abs(i)) {
+            max = abs(i);
+        }
+    }
+    return max;
+}
+
 int main() {
     const double EPS = 10E-5;
     int count = 0;
@@ -130,13 +141,13 @@ int main() {
     std::vector<double> f = { 1.5569, 2.0656, -2.9054, -8.0282, 3.4819 };
 
     //Протранспонируем А, дабы потом умножить на неё же и получить симметрическую матрицу, не забывая умножить вектор f
-    std::vector<std::vector<double>> A_trans = transpositionMatrix(A);
-    std::vector<std::vector<double>> result_A = multMatrix(A_trans, A);
-    std::vector<double> result_f = multVec(A_trans, f);
+   // std::vector<std::vector<double>> A_trans = transpositionMatrix(A);
+   // std::vector<std::vector<double>> result_A = multMatrix(A_trans, A);
+   // std::vector<double> result_f = multVec(A_trans, f);
 
     //Получим матрицу B
-    std::vector<std::vector<double>> B = getB(result_A);
-    std::vector<double> b = getb(result_A, result_f);
+    std::vector<std::vector<double>> B = getB(A);
+    std::vector<double> b = getb(A, f);
     
     //Проверим норму B для сходимости
     double normB = cubeMatNorm(B);
@@ -219,7 +230,7 @@ int main() {
     std::cout << std::endl;
     std::cout << std::endl;
 
-    std::cout << "===================================================Iteretion count==================================================\n\n";
+    std::cout << "===================================================Iteration count==================================================\n\n";
     std::cout << "                                                          " << count;
     std::cout << std::endl;
     std::cout << std::endl;
@@ -228,6 +239,11 @@ int main() {
     for (int i = 0; i < 5; ++i) {
         std::cout << std::setw(15) << neuralVector[i] << ' ';
     }
+    std::cout << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "====================================================Number of iteration==================================================\n\n";
+    std::cout << "\t\t\t\t\t\t\t" << (log(EPS*(1 - normB)/((1 - normB) * normVec(f) + normVec(b))))/(log(normB));
     std::cout << std::endl;
     std::cout << std::endl;
 }
