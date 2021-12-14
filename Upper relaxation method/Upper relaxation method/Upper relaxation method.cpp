@@ -59,7 +59,7 @@ double errorEstimation(std::vector<double> x2, std::vector<double> x1) {
 int main()
 {
     const double EPS = 10E-5;
-    const double w = 1.12;
+    const double w = 1.02;
     int count = 0;
 
     std::vector<std::vector<double>> A =
@@ -75,7 +75,7 @@ int main()
     std::vector<std::vector<double>> A_T = multMatrix(transpositionMatrix(A), A);
     std::vector<double> f_T = multVec(transpositionMatrix(A), f);
 
-    std::vector<double> x0 = f_T;
+    std::vector<double> x0 = f;
     std::vector<double> xk = { 0, 0, 0, 0, 0 };
 
     while (errorEstimation(xk, x0) > EPS) {
@@ -86,17 +86,17 @@ int main()
 
         for (int i = 0; i < 5; ++i) {
             xk[i] = 0;
-            xk[i] += (1 - w) * x0[i] + w * f_T[i] / A_T[i][i];
+            xk[i] += (1 - w) * x0[i] + w * f[i] / A[i][i];
 
             double sum = 0.;
             for (int j = 0; j < i; ++j) {
-                sum += A_T[i][j] * xk[j];
+                sum += A[i][j] * xk[j];
             }
             for (int j = i + 1; j < 5; ++j) {
-                sum += A_T[i][j] * x0[j];
+                sum += A[i][j] * x0[j];
             }
 
-            xk[i] -= w * sum / A_T[i][i];
+            xk[i] -= w * sum / A[i][i];
         }
     }
 
